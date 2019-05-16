@@ -56,7 +56,7 @@ class ConnectAddTaskForm extends Component {
     const { taskDescription } = this.state;
 
     return (
-      <form onSubmit={this.handleNewTaskSubmit} className="form-inline">
+      <form onSubmit={this.handleNewTaskSubmit} className="form-inline flex-fill">
         <div className="form-group flex-fill">
           <input
             type="text"

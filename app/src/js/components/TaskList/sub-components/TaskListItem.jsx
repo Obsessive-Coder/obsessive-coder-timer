@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { removeTask, editTask } from "../../../actions";
 import { EditButton } from "./";
+import { Task } from "../../";
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -49,16 +50,25 @@ class ConnectedTaskListItem extends Component {
     const { taskDescription } = this.state;
     const { task } = this.props;
 
-    // Prevent the task from being updated if it hasn't changed, or is empty.
-    if (task.description === taskDescription || taskDescription === "") return;
+    // Only update the task if it has changed.
+    if (task.description === taskDescription || taskDescription === "") {
+      this.props.editTask({
+        id: task.id,
+        description: taskDescription,
+        isComplete: task.isComplete
+      });
+    }
 
-    this.props.editTask({ id: task.id, description: taskDescription, isComplete: task.isComplete });
     this.setState(() => ({ isEditing: false }));
   }
 
   handleToggleCompleteTask() {
-    const {task, editTask } = this.props;
-    editTask({id: task.id, description: task.description, isComplete: !task.isComplete});
+    const { task, editTask } = this.props;
+    editTask({
+      id: task.id,
+      description: task.description,
+      isComplete: !task.isComplete
+    });
   }
 
   render() {
@@ -66,24 +76,16 @@ class ConnectedTaskListItem extends Component {
     const { task, className, children } = this.props;
 
     return (
-      <li className={`list-group-item p-0 ${className ? className : ""}`}>
+      <li className={`list-group-item d-flex mb-1 p-0 shadow-sm ${className ? className : ""}`}>
         {children || (
-          <div className="d-flex">
-            <button onClick={this.handleToggleCompleteTask} className="btn btn-sm btn-outline-success rounded-0">
-              <i className={`far fa-fw fa-lg ${task.isComplete ? 'fa-check-square' : 'fa-square'}`} />
-            </button>
-            {isEditing ? (
-              <input
-                type="text"
-                value={isEditing ? taskDescription : task.description}
-                onChange={this.handleEditTaskChange}
-                className="flex-fill form-group form-group-sm m-0 px-2 border-right-0"
-              />
-            ) : (
-              <label className="flex-fill mb-0 py-1 px-2">
-                {task.description}
-              </label>
-            )}
+          <Fragment>
+            <Task
+              task={task}
+              taskDescription={taskDescription}
+              isEditing={isEditing}
+              handleEditTaskChange={this.handleEditTaskChange}
+              handleToggleCompleteTask={this.handleToggleCompleteTask}
+            />
 
             <EditButton
               taskId={task.id}
@@ -108,7 +110,7 @@ class ConnectedTaskListItem extends Component {
                 isEditing ? "fa-window-close" : "fa-trash-alt"
               }`}
             />
-          </div>
+          </Fragment>
         )}
       </li>
     );
