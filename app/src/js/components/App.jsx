@@ -1,16 +1,13 @@
-import React from 'react';
-import TaskList from './TaskList.jsx';
-import AddTaskForm from './AddTaskForm.jsx';
+import React from "react";
+import { TaskList } from "./";
 
 const App = () => (
   <div className="row mt-5">
-    <div className="col-md-4 offset-md-1">
-      <h2>Today's Tasks</h2>
+    <div className="col-6">
       <TaskList />
     </div>
-    <div className="col-md-4 offset-1">
-      <h2>Add a new task</h2>
-      <AddTaskForm />
+    <div className="col-6">
+
     </div>
   </div>
 );

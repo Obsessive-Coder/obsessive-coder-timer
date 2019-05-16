@@ -1,12 +1,11 @@
 import { ADD_TASK, FOUND_ILLEGAL_CHARACTER } from '../constants/action-types';
-
-const forbidderCharacters = ['<', '>', '(', ')'];
+import { FORBIDDEN_CHARACTERS } from '../constants/constants';
 
 export function forbiddenCharacterMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
       if(action.type === ADD_TASK) {
-        const foundCharacter = forbidderCharacters.filter((character) => (
+        const foundCharacter = FORBIDDEN_CHARACTERS.filter((character) => (
           action.payload.description.includes(character)
         ));
 

@@ -1,4 +1,7 @@
-import { ADD_TASK, FOUND_ILLEGAL_CHARACTER } from "../constants/action-types";
+import {
+  ADD_TASK,
+  FOUND_ILLEGAL_CHARACTER
+} from "../constants/action-types";
 
 const initialState = {
   tasks: []
@@ -13,7 +16,7 @@ export default function rootReducer(state = initialState, action) {
     case FOUND_ILLEGAL_CHARACTER:
       return Object.assign({}, state, {
         tasks: state.tasks,
-        message: 'An invalid character was entered.'
+        message: "An invalid character was entered."
       });
     default:
       return state;

@@ -45,9 +45,8 @@ class ConnectAddTaskForm extends Component {
     }
 
     this.setState(state => ({taskDescription: '', message}), () => {
-      if (message) {
-        alert(message);
-      }
+      this.props.toggleIsAddingNewTask();
+      if (message) alert(message);
     });
   }
 
@@ -55,20 +54,18 @@ class ConnectAddTaskForm extends Component {
     const { taskDescription } = this.state;
 
     return(
-      <form onSubmit={this.handleNewTaskSubmit}>
-        <div className="form-group">
-          <label htmlFor="task-description">
-            Description
-          </label>
+      <form onSubmit={this.handleNewTaskSubmit} className="form-inline">
+        <div className="form-group flex-fill">
           <input
             type="text"
             id="taskDescription"
+            placeholder="Task description"
             value={taskDescription}
             onChange={this.handleChangeTaskDescription}
-            className="form-control"
+            className="form-control form-control-sm w-100 rounded-0"
           />
         </div>
-        <button type="submit" className="btn btn-success btn-lg">
+        <button type="submit" className="btn btn-outline-success btn-sm rounded-0">
           Add
         </button>
       </form>
