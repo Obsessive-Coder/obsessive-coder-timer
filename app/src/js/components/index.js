@@ -1,15 +1,12 @@
 import App from './App.jsx';
-import TaskList from './TaskList';
-import AddTaskForm from './AddTaskForm';
+import TaskList from './TaskList/';
 
 export {
   App,
-  TaskList,
-  AddTaskForm
+  TaskList
 };
 
 export default {
   App,
-  TaskList,
-  AddTaskForm
+  TaskList
 };

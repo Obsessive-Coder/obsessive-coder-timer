@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
-import { addTask } from "../actions";
-import { FOUND_ILLEGAL_CHARACTER } from '../constants/action-types';
+import { addTask } from "../../../actions";
+import { FOUND_ILLEGAL_CHARACTER } from '../../../constants/action-types';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -73,6 +73,6 @@ class ConnectAddTaskForm extends Component {
   }
 }
 
-const TaskForm = connect(null, mapDispatchToProps)(ConnectAddTaskForm);
+const AddTaskForm = connect(null, mapDispatchToProps)(ConnectAddTaskForm);
 
-export default TaskForm;
+export default AddTaskForm;

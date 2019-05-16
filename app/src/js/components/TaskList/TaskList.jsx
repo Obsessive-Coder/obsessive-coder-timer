@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { AddTaskForm } from './';
+import { TaskListHeading, TaskListItem, AddTaskForm } from "./sub-components";
 
 class ConnectedTaskList extends Component {
   constructor() {
@@ -15,6 +15,7 @@ class ConnectedTaskList extends Component {
   }
 
   toggleIsAddingNewTask() {
+    if (this.props.tasks.length <= 0) return;
     this.setState(previousState => {
       const { isAddingNewTask } = previousState;
       return { isAddingNewTask: !isAddingNewTask };
@@ -24,27 +25,26 @@ class ConnectedTaskList extends Component {
   render() {
     const { isAddingNewTask } = this.state;
     const { tasks } = this.props;
-    console.log(isAddingNewTask);
+
+    let taskListItems = tasks.map(task => (
+      <TaskListItem key={task.id} task={task} className="p-1">
+        {task.description}
+      </TaskListItem>
+    ));
+
+    if (isAddingNewTask || !taskListItems.length) {
+      taskListItems.unshift(
+        <TaskListItem key={-1} className="p-0">
+          <AddTaskForm toggleIsAddingNewTask={this.toggleIsAddingNewTask} />
+        </TaskListItem>
+      );
+    }
 
     return (
       <Fragment>
-        <div className="d-flex justify-content-center">
-          <h2 className="ml-auto">Today's Tasks</h2>
-          <button onClick={this.toggleIsAddingNewTask} className="btn btn-sm btn-success ml-auto">+</button>
-        </div>
-        <ul className="list-group list-group-flush">
-          {isAddingNewTask || tasks.length <= 0 && (
-            <li key="-1" className="list-group-item">
-              <AddTaskForm toggleIsAddingNewTask={this.toggleIsAddingNewTask} />
-            </li>
-          )}
+        <TaskListHeading onToggleAddNewTaskClick={this.toggleIsAddingNewTask} />
 
-          {tasks.map(task => (
-            <li key={task.id} className="list-group-item">
-              {task.description}
-            </li>
-          ))}
-        </ul>
+        <ul className="list-group list-group-flush">{taskListItems}</ul>
       </Fragment>
     );
   }
