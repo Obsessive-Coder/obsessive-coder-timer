@@ -15,3 +15,10 @@ code {
 .no-pointer-events {
   pointer-events: none;
 }
+.font-xl {
+  font-size: x-large;
+}
+
+.font-largest {
+  font-size: 64px;
+}

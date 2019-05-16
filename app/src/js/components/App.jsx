@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskList } from "../components";
+import { TaskList, Timer } from "../components";
 import "../../index.css";
 
 const App = () => (
@@ -8,7 +8,9 @@ const App = () => (
       <div className="col-4">
         <TaskList />
       </div>
-      <div className="col-8" />
+      <div className="col-8">
+        <Timer />
+      </div>
     </div>
   </div>
 );

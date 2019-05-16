@@ -8,4 +8,16 @@ export const DEFAULT_TASKS = [{
   isComplete: false
 }];
 
+export const DEFAULT_TIMER = {
+  timeLeft: 0,
+  isCounting: false,
+  intervalCount: 0
+};
+
 export const FORBIDDEN_CHARACTERS = ['<', '>', '(', ')'];
+
+export default {
+  DEFAULT_TASKS,
+  DEFAULT_TIMER,
+  FORBIDDEN_CHARACTERS
+};
