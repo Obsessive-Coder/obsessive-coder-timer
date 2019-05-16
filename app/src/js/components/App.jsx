@@ -1,5 +1,6 @@
 import React from "react";
 import { TaskList } from "../components";
+import '../../index.css';
 
 const App = () => (
   <div className="row mt-5">

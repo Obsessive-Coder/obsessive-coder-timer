@@ -1,3 +1,4 @@
 export const ADD_TASK = 'ADD_TASK';
+export const REMOVE_TASK = 'REMOVE_TASK';
 export const FOUND_ILLEGAL_CHARACTER = 'FOUND_ILLEGAL_CHARACTER';
 export const DATA_LOADED = 'DATA_LOADED';

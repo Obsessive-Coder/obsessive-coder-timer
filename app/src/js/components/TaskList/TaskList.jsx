@@ -27,9 +27,11 @@ class ConnectedTaskList extends Component {
     const { tasks } = this.props;
 
     let taskListItems = tasks.map(task => (
-      <TaskListItem key={task.id} task={task} className="p-1">
-        {task.description}
-      </TaskListItem>
+      <TaskListItem
+        key={task.id}
+        task={task}
+        className="p-1"
+      />
     ));
 
     if (isAddingNewTask || !taskListItems.length) {
