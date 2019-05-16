@@ -1,4 +1,4 @@
-import { ADD_TASK, REMOVE_TASK, FOUND_ILLEGAL_CHARACTER } from "../constants/action-types";
+import { ADD_TASK, REMOVE_TASK, FOUND_ILLEGAL_CHARACTER, EDIT_TASK } from "../constants/action-types";
 
 export function addTask(payload) {
   return {
@@ -12,6 +12,13 @@ export function removeTask(payload) {
     type: REMOVE_TASK,
     payload
   };
+}
+
+export function editTask(payload) {
+  return {
+    type: EDIT_TASK,
+    payload
+  }
 }
 
 export function invalidCharacter(payload) {

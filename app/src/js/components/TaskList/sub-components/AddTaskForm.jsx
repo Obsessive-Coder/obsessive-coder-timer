@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import { addTask } from "../../../actions";
-import { FOUND_ILLEGAL_CHARACTER } from '../../../constants/action-types';
+import { FOUND_ILLEGAL_CHARACTER } from "../../../constants/action-types";
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -15,8 +15,8 @@ class ConnectAddTaskForm extends Component {
     super();
 
     this.state = {
-      taskDescription: '',
-      message: ''
+      taskDescription: "",
+      message: ""
     };
 
     this.handleChangeTaskDescription = this.handleChangeTaskDescription.bind(
@@ -34,26 +34,28 @@ class ConnectAddTaskForm extends Component {
     event.preventDefault();
     const { taskDescription: description } = this.state;
 
-    if(description === '') return;
+    if (description === "") return;
 
     const id = uuidv1();
     const addTaskResult = this.props.addTask({ description, id });
     let message;
 
-    if(addTaskResult.type === FOUND_ILLEGAL_CHARACTER) {
-      message = 'An invalid character was entered. Please try again.';
+    if (addTaskResult.type === FOUND_ILLEGAL_CHARACTER) {
+      message = "An invalid character was entered. Please try again.";
     }
 
-    this.setState(state => ({taskDescription: '', message}), () => {
-      this.props.toggleIsAddingNewTask();
-      if (message) alert(message);
-    });
+    this.setState(
+      state => ({ taskDescription: "", message }),
+      () => {
+        if (message) alert(message);
+      }
+    );
   }
 
   render() {
     const { taskDescription } = this.state;
 
-    return(
+    return (
       <form onSubmit={this.handleNewTaskSubmit} className="form-inline">
         <div className="form-group flex-fill">
           <input
@@ -65,14 +67,20 @@ class ConnectAddTaskForm extends Component {
             className="form-control form-control-sm w-100 rounded-0"
           />
         </div>
-        <button type="submit" className="btn btn-outline-success btn-sm rounded-0">
-          Add
+        <button
+          type="submit"
+          className="btn btn-sm btn-outline-success rounded-0"
+        >
+          <i className="fas fa-plus fa-sm" />
         </button>
       </form>
     );
   }
 }
 
-const AddTaskForm = connect(null, mapDispatchToProps)(ConnectAddTaskForm);
+const AddTaskForm = connect(
+  null,
+  mapDispatchToProps
+)(ConnectAddTaskForm);
 
 export default AddTaskForm;
