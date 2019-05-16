@@ -1,7 +1,21 @@
 import React, { Fragment } from "react";
 
 export default function Task(props) {
-  const { task, taskDescription, isEditing, handleEditTaskChange, handleToggleCompleteTask } = props;
+  const {
+    task,
+    taskDescription,
+    isEditing,
+    handleEditTaskChange,
+    handleToggleCompleteTask,
+    handleEditTaskClick,
+    handleUpdateTask
+  } = props;
+
+  const handleKeyUp = (event) => {
+    if(event.key === 'Enter'){
+      handleUpdateTask();
+    }
+  }
 
   return (
     <Fragment>
@@ -20,10 +34,16 @@ export default function Task(props) {
           type="text"
           value={isEditing ? taskDescription : task.description}
           onChange={handleEditTaskChange}
+          onKeyUp={handleKeyUp}
           className="w-75 form-group form-group-sm m-0 px-2 border-right-0"
         />
       ) : (
-        <label className="w-75 m-0 py-1 px-2">{task.description}</label>
+        <label
+          onDoubleClick={handleEditTaskClick}
+          className="w-75 m-0 py-1 px-2"
+        >
+          {task.description}
+        </label>
       )}
     </Fragment>
   );

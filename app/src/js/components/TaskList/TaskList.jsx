@@ -4,7 +4,8 @@ import { TaskListItem, AddTaskForm } from "./sub-components";
 
 class ConnectedTaskList extends Component {
   render() {
-    const tasks = this.props.tasks.filter(task => !task.isComplete);
+    // const tasks = this.props.tasks.filter(task => !task.isComplete);
+    const { tasks } = this.props;
 
     // Make an array of list items for each task.
     const taskListItems = tasks.map(task => (

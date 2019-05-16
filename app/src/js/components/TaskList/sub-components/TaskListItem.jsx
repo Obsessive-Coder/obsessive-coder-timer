@@ -33,7 +33,7 @@ class ConnectedTaskListItem extends Component {
     this.props.removeTask(taskId);
   }
 
-  handleEditTaskClick(event) {
+  handleEditTaskClick() {
     const { description: taskDescription } = this.props.task;
     this.setState(previousState => ({
       isEditing: !previousState.isEditing,
@@ -51,7 +51,7 @@ class ConnectedTaskListItem extends Component {
     const { task } = this.props;
 
     // Only update the task if it has changed.
-    if (task.description === taskDescription || taskDescription === "") {
+    if (task.description !== taskDescription && taskDescription !== "") {
       this.props.editTask({
         id: task.id,
         description: taskDescription,
@@ -84,7 +84,9 @@ class ConnectedTaskListItem extends Component {
               taskDescription={taskDescription}
               isEditing={isEditing}
               handleEditTaskChange={this.handleEditTaskChange}
+              handleEditTaskClick={this.handleEditTaskClick}
               handleToggleCompleteTask={this.handleToggleCompleteTask}
+              handleUpdateTask={this.handleUpdateTask}
             />
 
             <EditButton
