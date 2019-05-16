@@ -4,17 +4,15 @@ import { TaskListItem, AddTaskForm } from "./sub-components";
 
 class ConnectedTaskList extends Component {
   render() {
-    const { tasks } = this.props;
+    const tasks = this.props.tasks.filter(task => !task.isComplete);
+
 
     const taskListItems = tasks.map(task => (
-      <TaskListItem
-        key={task.id}
-        task={task}
-      />
+      <TaskListItem key={task.id} task={task} />
     ));
 
     taskListItems.unshift(
-      <TaskListItem key={-1}>
+      <TaskListItem key={-1} className="mb-1">
         <AddTaskForm toggleIsAddingNewTask={this.toggleIsAddingNewTask} />
       </TaskListItem>
     );

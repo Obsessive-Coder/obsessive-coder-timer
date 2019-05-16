@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { removeTask, editTask } from "../../../actions";
+import { EditButton } from "./";
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -23,6 +24,7 @@ class ConnectedTaskListItem extends Component {
     this.handleEditTaskClick = this.handleEditTaskClick.bind(this);
     this.handleEditTaskChange = this.handleEditTaskChange.bind(this);
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
+    this.handleToggleCompleteTask = this.handleToggleCompleteTask.bind(this);
   }
 
   handleRemoveTaskClick(event) {
@@ -44,25 +46,38 @@ class ConnectedTaskListItem extends Component {
   }
 
   handleUpdateTask() {
-    const { id } = this.props.task;
-    this.props.editTask({id, description: this.state.taskDescription});
-    this.setState(() => ({isEditing: false}));
+    const { taskDescription } = this.state;
+    const { task } = this.props;
+
+    // Prevent the task from being updated if it hasn't changed, or is empty.
+    if (task.description === taskDescription || taskDescription === "") return;
+
+    this.props.editTask({ id: task.id, description: taskDescription, isComplete: task.isComplete });
+    this.setState(() => ({ isEditing: false }));
+  }
+
+  handleToggleCompleteTask() {
+    const {task, editTask } = this.props;
+    editTask({id: task.id, description: task.description, isComplete: !task.isComplete});
   }
 
   render() {
     const { isEditing, taskDescription } = this.state;
-    const { task, children } = this.props;
+    const { task, className, children } = this.props;
 
     return (
-      <li className="list-group-item p-0">
+      <li className={`list-group-item p-0 ${className ? className : ""}`}>
         {children || (
           <div className="d-flex">
+            <button onClick={this.handleToggleCompleteTask} className="btn btn-sm btn-outline-success rounded-0">
+              <i className={`far fa-fw fa-lg ${task.isComplete ? 'fa-check-square' : 'fa-square'}`} />
+            </button>
             {isEditing ? (
               <input
                 type="text"
                 value={isEditing ? taskDescription : task.description}
                 onChange={this.handleEditTaskChange}
-                className="flex-fill form-group form-group-sm m-0 px-2"
+                className="flex-fill form-group form-group-sm m-0 px-2 border-right-0"
               />
             ) : (
               <label className="flex-fill mb-0 py-1 px-2">
@@ -70,21 +85,29 @@ class ConnectedTaskListItem extends Component {
               </label>
             )}
 
-            <button
-              data-task-id={task.id}
-              onClick={isEditing ? this.handleUpdateTask : this.handleEditTaskClick}
-              className={`btn btn-sm rounded-0 ${isEditing ? 'btn-success' : 'btn-outline-info'}`}
-            >
-              <i className={`no-pointer-events fas ${isEditing ? 'fa-check' : 'fa-pencil-alt'}`} />
-            </button>
+            <EditButton
+              taskId={task.id}
+              handleClick={
+                isEditing ? this.handleUpdateTask : this.handleEditTaskClick
+              }
+              buttonClass={isEditing ? "btn-success" : "btn-outline-info"}
+              iconClass={`fas ${isEditing ? "fa-check" : "fa-pencil-alt"}`}
+            />
 
-            <button
-              data-task-id={task.id}
-              onClick={isEditing ? this.handleEditTaskClick : this.handleRemoveTaskClick}
-              className={`btn btn-sm rounded-0 ${isEditing ? 'btn-outline-warning' : 'btn-outline-danger'}`}
-            >
-              <i className={`no-pointer-events far ${isEditing ? 'fa-window-close' : 'fa-trash-alt'}`} />
-            </button>
+            <EditButton
+              taskId={task.id}
+              handleClick={
+                isEditing
+                  ? this.handleEditTaskClick
+                  : this.handleRemoveTaskClick
+              }
+              buttonClass={
+                isEditing ? "btn-outline-warning" : "btn-outline-danger"
+              }
+              iconClass={`far ${
+                isEditing ? "fa-window-close" : "fa-trash-alt"
+              }`}
+            />
           </div>
         )}
       </li>

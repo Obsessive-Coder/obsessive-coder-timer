@@ -64,14 +64,14 @@ class ConnectAddTaskForm extends Component {
             placeholder="Task description"
             value={taskDescription}
             onChange={this.handleChangeTaskDescription}
-            className="form-control form-control-sm w-100 rounded-0"
+            className="form-control w-100 rounded-0"
           />
         </div>
         <button
           type="submit"
-          className="btn btn-sm btn-outline-success rounded-0"
+          className="btn btn-success rounded-0"
         >
-          <i className="fas fa-plus fa-sm" />
+          <i className="fas fa-plus fa-sm fa-fw" />
         </button>
       </form>
     );
