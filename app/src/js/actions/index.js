@@ -50,6 +50,13 @@ export function countTimer(payload) {
   }
 }
 
+export function incrementIntervalCount(payload) {
+  return {
+    type: ACTION_TYPES.INCREMENT_INTERVAL_COUNT,
+    payload
+  }
+}
+
 export function toggleTimerIsCounting(payload) {
   return {
     type: ACTION_TYPES.TOGGLE_TIMER_IS_COUNTING,
