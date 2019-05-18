@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
-import { addTask } from "../../../actions";
-import { FOUND_ILLEGAL_CHARACTER } from "../../../constants/action-types";
+import ACTIONS from '../../../actions';
+import { ACTION_TYPES } from "../../../constants/action-types";
 
 function mapDispatchToProps(dispatch) {
   return {
-    addTask: task => dispatch(addTask(task))
+    addTask: task => dispatch(ACTIONS.ADD_TASK(task))
   };
 }
 
@@ -40,7 +40,7 @@ class ConnectAddTaskForm extends Component {
     const addTaskResult = this.props.addTask({ description, id });
     let message;
 
-    if (addTaskResult.type === FOUND_ILLEGAL_CHARACTER) {
+    if (addTaskResult.type === ACTION_TYPES.FOUND_ILLEGAL_CHARACTER) {
       message = "An invalid character was entered. Please try again.";
     }
 

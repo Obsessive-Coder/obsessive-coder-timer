@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { removeTask, editTask } from "../../../actions";
+import ACTIONS from '../../../actions';
 import { EditButton } from "./";
 import { Task } from "../../";
 
 function mapDispatchToProps(dispatch) {
   return {
-    removeTask: taskId => dispatch(removeTask({ taskId })),
-    editTask: task => dispatch(editTask(task))
+    removeTask: taskId => dispatch(ACTIONS.REMOVE_TASK({ taskId })),
+    editTask: task => dispatch(ACTIONS.EDIT_TASK(task))
   };
 }
 

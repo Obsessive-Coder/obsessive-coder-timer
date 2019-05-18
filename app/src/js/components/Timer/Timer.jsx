@@ -1,12 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  startTimer,
-  stopTimer,
-  countTimer,
-  toggleTimerIsCounting,
-  incrementIntervalCount
-} from "../../actions";
+
+import ACTIONS from '../../actions';
 
 import {
   DEFAULT_TIMER,
@@ -17,11 +12,12 @@ import {
 
 const mapStateToProps = state => ({ timer: state.timer });
 const mapDispatchToProps = dispatch => ({
-  startTimer: timer => dispatch(startTimer(timer)),
-  stopTimer: () => dispatch(stopTimer()),
-  countTimer: () => dispatch(countTimer()),
-  toggleTimerIsCounting: () => dispatch(toggleTimerIsCounting()),
-  incrementIntervalCount: () => dispatch(incrementIntervalCount())
+  startTimer: timer => dispatch(ACTIONS.START_TIMER(timer)),
+  stopTimer: () => dispatch(ACTIONS.STOP_TIMER()),
+  countTimer: () => dispatch(ACTIONS.COUNT_TIMER()),
+  toggleTimerIsCounting: () => dispatch(ACTIONS.TOGGLE_TIMER_IS_COUNTING()),
+  incrementIntervalCount: () => dispatch(ACTIONS.INCREMENT_INTERVAL_COUNT()),
+  resetTimer: () => dispatch(ACTIONS.RESET_TIMER())
 });
 
 class ConnectedTimer extends Component {
@@ -69,6 +65,8 @@ class ConnectedTimer extends Component {
 
         if(intervalCount < 4 || (intervalCount === 4 && timerPhase === 'break')) {
         this.startTimerInterval(newTimer);
+        } else {
+          this.props.resetTimer();
         }
       }
     }, 1000);

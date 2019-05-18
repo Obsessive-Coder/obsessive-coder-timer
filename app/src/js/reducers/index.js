@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from "../constants";
+import { ACTION_TYPES } from "../constants/action-types";
 
 import { DEFAULT_TASKS, DEFAULT_TIMER } from "../constants/constants";
 
@@ -98,6 +98,11 @@ export default function rootReducer(state = initialState, action) {
           longBreakLength: state.timer.longBreakLength,
           phase: phase
         }
+      });
+
+    case ACTION_TYPES.RESET_TIMER:
+      return Object.assign({}, state, {
+        timer: {...DEFAULT_TIMER}
       });
 
     default:
