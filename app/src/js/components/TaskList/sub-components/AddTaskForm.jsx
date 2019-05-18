@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
-import ACTIONS from '../../../actions';
+import ACTIONS from "../../../actions";
 import { ACTION_TYPES } from "../../../constants/action-types";
 
 function mapDispatchToProps(dispatch) {
@@ -15,8 +15,7 @@ class ConnectAddTaskForm extends Component {
     super();
 
     this.state = {
-      taskDescription: "",
-      message: ""
+      taskDescription: ""
     };
 
     this.handleChangeTaskDescription = this.handleChangeTaskDescription.bind(
@@ -38,25 +37,22 @@ class ConnectAddTaskForm extends Component {
 
     const id = uuidv1();
     const addTaskResult = this.props.addTask({ description, id });
-    let message;
 
     if (addTaskResult.type === ACTION_TYPES.FOUND_ILLEGAL_CHARACTER) {
-      message = "An invalid character was entered. Please try again.";
+      return alert("An invalid character was entered. Please try again.");
     }
 
-    this.setState(
-      state => ({ taskDescription: "", message }),
-      () => {
-        if (message) alert(message);
-      }
-    );
+    this.setState(state => ({ taskDescription: "" }));
   }
 
   render() {
     const { taskDescription } = this.state;
 
     return (
-      <form onSubmit={this.handleNewTaskSubmit} className="form-inline flex-fill">
+      <form
+        onSubmit={this.handleNewTaskSubmit}
+        className="form-inline flex-fill"
+      >
         <div className="form-group flex-fill">
           <input
             type="text"
@@ -67,10 +63,7 @@ class ConnectAddTaskForm extends Component {
             className="form-control w-100 rounded-0"
           />
         </div>
-        <button
-          type="submit"
-          className="btn btn-success rounded-0"
-        >
+        <button type="submit" className="btn btn-success rounded-0">
           <i className="fas fa-plus fa-sm fa-fw" />
         </button>
       </form>

@@ -1,31 +1,28 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { TaskListItem, AddTaskForm } from "./sub-components";
 
-class ConnectedTaskList extends Component {
-  render() {
-    // const tasks = this.props.tasks.filter(task => !task.isComplete);
-    const { tasks } = this.props;
+function ConnectedTaskList(props) {
+  const { tasks } = props;
 
-    // Make an array of list items for each task.
-    const taskListItems = tasks.map(task => (
-      <TaskListItem key={task.id} task={task} />
-    ));
+  // Make an array of list items for each task.
+  const taskListItems = tasks.map(task => (
+    <TaskListItem key={task.id} task={task} />
+  ));
 
-    // Add the new task form as the first item in the array of list items.
-    taskListItems.unshift(
-      <TaskListItem key={-1} className="mb-1">
-        <AddTaskForm toggleIsAddingNewTask={this.toggleIsAddingNewTask} />
-      </TaskListItem>
-    );
+  // Add the new task form as the first item in the array of list items.
+  taskListItems.unshift(
+    <TaskListItem key={-1} className="mb-1">
+      <AddTaskForm />
+    </TaskListItem>
+  );
 
-    return (
-      <Fragment>
-        <h2 className="text-center">Today's Tasks</h2>
-        <ul className="list-group list-group-flush">{taskListItems}</ul>
-      </Fragment>
-    );
-  }
+  return (
+    <Fragment>
+      <h2 className="text-center">Today's Tasks</h2>
+      <ul className="list-group list-group-flush">{taskListItems}</ul>
+    </Fragment>
+  );
 }
 
 const mapStateToProps = state => {

@@ -17,11 +17,3 @@ export function forbiddenCharacterMiddleware({ dispatch }) {
     }
   }
 }
-
-export function getNextTimerLength() {
-  return function(next) {
-    return function(action) {
-
-    }
-  }
-}

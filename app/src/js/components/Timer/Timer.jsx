@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { PomodoroCount, TimerButton, TimerDisplay } from './sub-components';
+
 import ACTIONS from '../../actions';
 
 import {
@@ -92,40 +94,28 @@ class ConnectedTimer extends Component {
 
   render() {
     const { timer } = this.props;
-    const timerMinutes = Math.floor(timer.timeLeft / 60).toString();
-    const timerSeconds = Math.floor(timer.timeLeft % 60)
-      .toString()
-      .padStart(2, 0);
 
     return (
       <div className="d-flex">
         <div className="mx-auto text-center">
-          <p className="mb-0 font-largest">
-            <span>{timerMinutes}</span>:<span>{timerSeconds}</span>
-          </p>
+          <TimerDisplay timeLeft={timer.timeLeft} />
 
           <div className="d-flex">
-            <button
-              onClick={this.handlePlayClick}
-              className="flex-fill btn btn-outline-info rounded-0"
-            >
-              <i
-                className={`fas ${timer.isCounting ? "fa-pause" : "fa-play"}`}
-              />
-            </button>
-            <button
-              onClick={this.handleStopClick}
-              className="btn btn-outline-danger rounded-0"
-            >
-              <i className="fas fa-stop" />
-            </button>
+            <TimerButton
+              color="info"
+              iconClass={timer.isCounting ? "fa-pause" : "fa-play"}
+              className="flex-fill"
+              handleOnClick={this.handlePlayClick}
+            />
+            <TimerButton
+              color="danger"
+              iconClass="fa-stop"
+              handleOnClick={this.handleStopClick}
+            />
           </div>
         </div>
 
-        <p className="font-xl">
-          Pomodoros:&nbsp;
-          <span>{timer.intervalCount}</span>
-        </p>
+        <PomodoroCount intervalCount={timer.intervalCount} />
       </div>
     );
   }
