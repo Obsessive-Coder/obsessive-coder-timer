@@ -2,26 +2,25 @@ export const DEFAULT_TASKS = [
   {
     id: "b10823dd-2528-4408-8db6-b10e48b61889",
     description: "Learn Redux",
-    isComplete: false
+    isComplete: true
   },
   {
     id: "dc3f25e5-ba95-4098-b49c-6e0c84484999",
     description: "Make a Redux app",
-    isComplete: false
+    isComplete: true
   }
 ];
 
-export const DEFAULT_TIMER_LENGTH = 10* 60;
-export const DEFAULT_TIMER_SHORT_BREAK = 3 * 60;
-export const DEFAULT_TIMER_LONG_BREAK = 15 * 60;
+export const DEFAULT_POMODORO_LENGTH = 25 * 60;
+export const DEFAULT_POMODORO_SHORT_BREAK = 5 * 60;
+export const DEFAULT_POMODORO_LONG_BREAK = 30 * 60;
 
-export const DEFAULT_TIMER = {
-  timeLeft: DEFAULT_TIMER_LENGTH / 60,
-  timerLength: DEFAULT_TIMER_LENGTH / 60,
-  shortBreakLength: DEFAULT_TIMER_SHORT_BREAK / 60,
-  longBreakLength: DEFAULT_TIMER_LONG_BREAK / 60,
-  phase: 'pomodoro',
-  isCounting: false,
+export const DEFAULT_POMODORO = {
+  pomodoroLength: DEFAULT_POMODORO_LENGTH,
+  shortBreakLength: DEFAULT_POMODORO_SHORT_BREAK,
+  longBreakLength: DEFAULT_POMODORO_LONG_BREAK,
+  timeLeft: DEFAULT_POMODORO_LENGTH,
+  status: "stopped",
   intervalCount: 0
 };
 
@@ -29,9 +28,9 @@ export const FORBIDDEN_CHARACTERS = ["<", ">", "(", ")"];
 
 export default {
   DEFAULT_TASKS,
-  DEFAULT_TIMER,
+  DEFAULT_POMODORO,
   FORBIDDEN_CHARACTERS,
-  DEFAULT_TIMER_LENGTH,
-  DEFAULT_TIMER_SHORT_BREAK,
-  DEFAULT_TIMER_LONG_BREAK
+  DEFAULT_POMODORO_LENGTH,
+  DEFAULT_POMODORO_SHORT_BREAK,
+  DEFAULT_POMODORO_LONG_BREAK
 };

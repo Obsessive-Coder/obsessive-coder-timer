@@ -3,29 +3,41 @@ import { CONSTANTS } from "../constants";
 
 const initialState = {
   tasks: CONSTANTS.DEFAULT_TASKS,
-  timer: CONSTANTS.DEFAULT_TIMER
+  timer: CONSTANTS.DEFAULT_POMODORO
 };
 
 export default function rootReducer(state = initialState, action) {
-  function getNewStateObject(propertyName, propertyValue) {
-    return Object.assign({}, state, {
-      [propertyName]: propertyValue
-    });
-  }
+  const getNextTimerLength = () => {
+    let timerLength = timer.pomodoroLength;
 
-  function getNewTimer(timer, newProperties = []) {
-    const newTimer = Object.assign({}, timer);
-    newProperties.forEach(property => {
-      newTimer[property.key] = property.value;
-    });
-    return newTimer;
-  }
+    if (timer.status === "work") {
+      timerLength =
+        timer.intervalCount && timer.intervalCount % 4 === 0
+          ? timer.longBreakLength
+          : timer.shortBreakLength;
+    }
+
+    return timerLength;
+  };
+
+  const getNextStatus = () => {
+    return timer.status === "work" ? "break" : "work";
+  };
+
+  const getNextIntervalCount = () => {
+    const { intervalCount, status } = timer;
+    return status === "work" ? intervalCount + 1 : intervalCount;
+  };
+
+  const decrementTimeLeft = () => {
+    let timeLeft = timer.timeLeft - 1;
+    return timeLeft < 1 ? 0 : timeLeft;
+  };
 
   let tasks = state.tasks.slice();
   let timer = Object.assign({}, state.timer);
   let statePropertyName;
   let statePropertyValue;
-  let newProperties = [];
 
   switch (action.type) {
     case ACTION_TYPES.ADD_TASK:
@@ -56,50 +68,27 @@ export default function rootReducer(state = initialState, action) {
       break;
 
     case ACTION_TYPES.START_TIMER:
-      newProperties.push({ key: "isCounting", value: true });
+      timer.intervalCount = getNextIntervalCount();
+      timer.timeLeft = getNextTimerLength();
+      timer.status = getNextStatus();
       statePropertyName = "timer";
-      timer = action.payload;
-      break;
-
-    case ACTION_TYPES.STOP_TIMER:
-      statePropertyName = "timer";
-      timer = initialState.timer;
-      break;
-
-    case ACTION_TYPES.TOGGLE_TIMER_IS_COUNTING:
-      newProperties.push({ key: "isCounting", value: !timer.isCounting });
-      statePropertyName = "timer";
+      statePropertyValue = timer;
       break;
 
     case ACTION_TYPES.COUNT_TIMER:
-      let timeLeft = timer.timeLeft >= 1 ? timer.timeLeft - 1 : 0;
-      newProperties.push({ key: "timeLeft", value: timeLeft });
+      timer.timeLeft = decrementTimeLeft();
       statePropertyName = "timer";
-      break;
-
-    case ACTION_TYPES.INCREMENT_INTERVAL_COUNT:
-      const intervalCount =
-        timer.intervalCount < 4 ? timer.intervalCount + 1 : 0;
-      const phase = timer.phase === "pomodoro" ? "break" : "pomodoro";
-      newProperties.push(
-        { key: "intervalCount", value: intervalCount },
-        { key: "phase", value: phase }
-      );
-      statePropertyName = "timer";
-      break;
-
-    case ACTION_TYPES.RESET_TIMER:
-      statePropertyName = "timer";
-      timer = CONSTANTS.DEFAULT_TIMER;
+      statePropertyValue = timer;
       break;
 
     default:
       return state;
   }
 
-  if (statePropertyName === "timer") {
-    statePropertyValue = getNewTimer(timer, newProperties);
-  }
+  // Return the updated sate.
+  const newState = Object.assign({}, state, {
+    [statePropertyName]: statePropertyValue
+  });
 
-  return getNewStateObject(statePropertyName, statePropertyValue);
+  return newState;
 }

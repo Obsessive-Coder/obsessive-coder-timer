@@ -1,20 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { PomodoroCount, TimerButton, TimerDisplay } from './sub-components';
+import { PomodoroCount, TimerButton, TimerDisplay } from "./sub-components";
 
-import ACTIONS from '../../actions';
+import ACTIONS from "../../actions";
 
-import {
-  DEFAULT_TIMER,
-  DEFAULT_TIMER_LENGTH,
-  DEFAULT_TIMER_SHORT_BREAK,
-  DEFAULT_TIMER_LONG_BREAK
-} from "../../constants/constants";
+import { CONSTANTS } from "../../constants";
 
 const mapStateToProps = state => ({ timer: state.timer });
 const mapDispatchToProps = dispatch => ({
-  startTimer: timer => dispatch(ACTIONS.START_TIMER(timer)),
+  startTimer: () => dispatch(ACTIONS.START_TIMER()),
   stopTimer: () => dispatch(ACTIONS.STOP_TIMER()),
   countTimer: () => dispatch(ACTIONS.COUNT_TIMER()),
   toggleTimerIsCounting: () => dispatch(ACTIONS.TOGGLE_TIMER_IS_COUNTING()),
@@ -26,6 +21,10 @@ class ConnectedTimer extends Component {
   constructor() {
     super();
 
+    this.state = {
+      isStopped: false
+    };
+
     this.timer = undefined;
 
     // Bind class methods.
@@ -34,62 +33,41 @@ class ConnectedTimer extends Component {
     this.handleStopClick = this.handleStopClick.bind(this);
   }
 
-  startTimerInterval(timer) {
-    this.props.startTimer(timer);
+  startTimerInterval() {
+    this.setState(
+      () => ({ isStopped: false }),
+      () => {
+        if (this.props.timer.timeLeft < 1) {
+          this.props.startTimer();
+        }
 
-    this.timer = setInterval(() => {
-      if (this.props.timer.isCounting) {
-        this.props.countTimer();
-      }
+        this.timer = setInterval(() => {
+          if (this.state.isStopped) return;
 
-      if (this.props.timer.timeLeft <= 0) {
-        this.handleStopClick();
+          this.props.countTimer();
 
-        let { phase: timerPhase, intervalCount } = this.props.timer;
-        let timerLength = DEFAULT_TIMER_LENGTH / 60;
-
-        if (timerPhase === "pomodoro") {
-          timerPhase = "break";
-          intervalCount += 1;
-          if (intervalCount < 4) {
-            timerLength = DEFAULT_TIMER_SHORT_BREAK / 60;
-          } else {
-            timerLength = DEFAULT_TIMER_LONG_BREAK / 60;
+          // Stop the interval if the timer is out of time.
+          if (this.props.timer.timeLeft <= 0) {
+            this.handleStopClick();
+            this.startTimerInterval();
           }
-        } else {
-          timerPhase = "pomodoro";
-        }
-
-        const newTimer = DEFAULT_TIMER;
-        newTimer.timeLeft = timerLength;
-        newTimer.intervalCount = intervalCount;
-        newTimer.phase = timerPhase;
-
-        if(intervalCount < 4 || (intervalCount === 4 && timerPhase === 'break')) {
-        this.startTimerInterval(newTimer);
-        } else {
-          this.props.resetTimer();
-        }
+        }, 1000);
       }
-    }, 1000);
+    );
   }
 
   handlePlayClick() {
-    this.props.toggleTimerIsCounting();
-    if (this.props.timer.timeLeft <= 0) {
-      this.startTimerInterval(DEFAULT_TIMER);
-    }
+    if(!this.state.isStopped) return;
+    this.startTimerInterval();
   }
 
   handleStopClick() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-    this.props.stopTimer();
+    clearInterval(this.timer);
+    this.setState(state => ({ isStopped: true }));
   }
 
   componentDidMount() {
-    this.startTimerInterval(DEFAULT_TIMER);
+    this.startTimerInterval();
   }
 
   render() {
@@ -100,7 +78,7 @@ class ConnectedTimer extends Component {
         <div className="mx-auto text-center">
           <TimerDisplay timeLeft={timer.timeLeft} />
 
-          <div className="d-flex">
+          <div className="d-flex w-50 mx-auto">
             <TimerButton
               color="info"
               iconClass={timer.isCounting ? "fa-pause" : "fa-play"}
@@ -113,6 +91,10 @@ class ConnectedTimer extends Component {
               handleOnClick={this.handleStopClick}
             />
           </div>
+
+          <p className="mt-5 timer-status">
+            {timer.status === "work" ? "Working" : "Taking a Break"}
+          </p>
         </div>
 
         <PomodoroCount intervalCount={timer.intervalCount} />

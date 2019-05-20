@@ -22,3 +22,8 @@ code {
 .font-largest {
   font-size: 64px;
 }
+
+.timer-status {
+  font-size:  80px;
+  letter-spacing: 5px;
+}
